@@ -1,0 +1,11 @@
+farmer_id,name,region,soil_type,soil_ph,soil_moisture,nitrogen,phosphorus,potassium,organic_carbon,crop_type,crop_stage,irrigation_type,water_availability,previous_crop,fertilizer_used,previous_yield_ton,pest_history,current_season,rainfall_forecast_mm,temperature_c,humidity_percent,market_demand
+F001,Rajesh Kumar,West Bengal,Clay Loam,6.5,68,72,40,55,0.82,Paddy,Tillering,Flood,High,Jute,Urea + DAP,4.5,Stem Borer,Kharif,220,31,84,High
+F002,Suresh Patil,Maharashtra,Black Soil,7.8,42,60,35,48,0.65,Cotton,Flowering,Drip,Medium,Soybean,NPK 10:26:26,2.8,Bollworm,Kharif,110,35,62,Medium
+F003,Amit Singh,Punjab,Alluvial,7.2,75,88,45,62,0.91,Wheat,Germination,Sprinkler,High,Rice,Urea,5.6,None,Rabi,45,19,58,High
+F004,Rina Das,Assam,Sandy Loam,5.9,81,54,30,42,1.10,Tea,Vegetative,Drip,High,Tea,Organic Compost,3.2,Red Spider Mite,Monsoon,310,28,91,High
+F005,Manoj Yadav,Uttar Pradesh,Loamy,6.8,58,65,38,51,0.74,Sugarcane,Grand Growth,Furrow,Medium,Wheat,Urea + Potash,6.9,Termites,Zaid,95,33,69,Medium
+F006,Kavita Sharma,Rajasthan,Sandy,8.1,29,38,22,30,0.41,Bajra,Seedling,Drip,Low,Mustard,Organic Manure,1.9,None,Kharif,60,39,34,Low
+F007,Arjun Reddy,Andhra Pradesh,Red Soil,6.3,64,70,41,57,0.79,Maize,Vegetative,Sprinkler,Medium,Groundnut,DAP,4.1,Fall Armyworm,Kharif,140,32,71,High
+F008,Priya Nair,Kerala,Laterite,5.7,86,58,34,46,1.22,Banana,Fruiting,Drip,High,Pineapple,Organic Compost + NPK,5.0,Panama Disease,Monsoon,280,29,88,High
+F009,Vikram Chauhan,Haryana,Clay,7.5,52,74,39,60,0.69,Mustard,Flowering,Flood,Medium,Bajra,Urea + SSP,3.7,Aphids,Rabi,55,24,49,Medium
+F010,Neha Verma,Bihar,Silty Loam,6.6,73,81,43,58,0.88,Potato,Tuber Formation,Sprinkler,High,Maize,NPK 20:20:20,7.1,Early Blight,Rabi,125,22,76,High
