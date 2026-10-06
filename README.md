@@ -1,23 +1,29 @@
 # AI-Powered Personalized Smart Farming Assistant
 
-A backend-focused agricultural advisory system that combines farmer-specific data, rule-based recommendations, semantic retrieval, and local LLM inference to provide contextual farming guidance.
+A backend-focused agricultural advisory system that combines farmer-specific structured data, rule-based recommendations, semantic retrieval, conversation memory, and local LLM inference.
 
-## Problem
+## What it does
 
-Generic agricultural advice does not always account for a farmer's soil, crop, weather, irrigation, nutrient, or pest context. This project explores a personalized advisory workflow that combines structured data with retrieved agricultural knowledge.
+Given a farmer ID and a natural-language question, the API:
+
+1. Loads the farmer's structured profile from SQLite.
+2. Generates recommendations for irrigation, soil health, fertilizer, crop suitability, and pest risk.
+3. Maintains a short in-memory conversation history.
+4. Uses a local Ollama model to turn the structured context into a concise response.
+5. Exposes the workflow through FastAPI.
+
+The repository also includes a FAISS-based embedding workflow for farmer-profile retrieval.
 
 ## Architecture
 
-```text
+~~~text
 Farmer Query
      ↓
-FastAPI API
+FastAPI
      ↓
-Farmer Context Retrieval
+Farmer Profile (SQLite)
      ↓
-Recommendation Engine
-     ↓
-RAG Retrieval (FAISS)
+Rule-Based Recommendation Engine
      ↓
 Conversation Memory
      ↓
@@ -25,31 +31,20 @@ Prompt Construction
      ↓
 Ollama Local LLM
      ↓
-Structured Response
-```
+Structured JSON Response
+~~~
 
 ## Core Features
 
 - Farmer-specific contextual recommendations
-- Natural-language conversational interface
-- Rule-based recommendation engine
-- Retrieval-Augmented Generation
-- Local LLM inference through Ollama
+- Irrigation, soil, fertilizer, crop-suitability, and pest-risk rules
+- FAISS semantic retrieval workflow
 - Sentence Transformer embeddings
-- FAISS vector search
-- Conversational memory
-- Structured JSON API responses
+- Local LLM inference with Ollama
+- Short conversation memory per farmer
 - SQLite persistence with SQLAlchemy
-
-## Recommendation Areas
-
-The current design covers areas such as:
-
-- Irrigation
-- Soil health
-- Fertilizer recommendations
-- Crop suitability
-- Pest-risk analysis
+- CRUD API for farmer records
+- Swagger / OpenAPI documentation
 
 ## Tech Stack
 
@@ -59,114 +54,146 @@ The current design covers areas such as:
 | Database | SQLite |
 | ORM | SQLAlchemy |
 | Embeddings | Sentence Transformers |
-| Vector database | FAISS |
+| Vector store | FAISS |
 | LLM runtime | Ollama |
+| Data processing | Pandas |
 | Language | Python |
-| API docs | Swagger / OpenAPI |
 
 ## Project Structure
 
-```text
+~~~text
 smart-farming-assistant/
 ├── app/
-│   ├── api/
+│   ├── api/routes/
 │   ├── core/
 │   ├── data/
+│   │   └── farmers.csv
 │   ├── models/
 │   ├── rag/
+│   │   ├── documents/
+│   │   ├── embeddings/
+│   │   └── vector_store/
 │   ├── schemas/
 │   ├── services/
-│   ├── main.py
 │   ├── init_db.py
-│   └── load_data.py
+│   ├── load_data.py
+│   └── main.py
 ├── requirements.txt
-├── README.md
-└── smart_farming.db
-```
+├── .gitignore
+└── README.md
+~~~
+
+Generated FAISS files are intentionally ignored by Git and should be rebuilt locally.
 
 ## Run Locally
 
 ### 1. Create an environment
 
-```bash
-python -m venv venv
-```
+~~~bash
+python -m venv .venv
+~~~
 
 Windows:
 
-```powershell
-venv\Scripts\activate
-```
+~~~powershell
+.\.venv\Scripts\Activate.ps1
+~~~
 
 ### 2. Install dependencies
 
-```bash
+~~~bash
 pip install -r requirements.txt
-```
+~~~
 
-### 3. Start Ollama and pull a local model
+### 3. Start Ollama
 
-For example:
+Make sure Ollama is running and the `phi3` model is available:
 
-```bash
-ollama run phi3:latest
-```
+~~~bash
+ollama run phi3
+~~~
 
-### 4. Initialize the database
+### 4. Initialize SQLite
 
-```bash
+~~~bash
 python -m app.init_db
-```
+~~~
 
-### 5. Load farmer data
+### 5. Load the sample farmer dataset
 
-```bash
+~~~bash
 python -m app.load_data
-```
+~~~
 
-### 6. Build the embedding index
+### 6. Build the FAISS index
 
-```bash
+~~~bash
 python -m app.rag.embeddings.create_embeddings
-```
+~~~
 
 ### 7. Start the API
 
-```bash
+~~~bash
 uvicorn app.main:app --reload
-```
+~~~
 
-Swagger documentation:
+API documentation:
 
-```text
+~~~text
 http://127.0.0.1:8000/docs
-```
+~~~
 
-## Example
+## API
 
-A request can provide a farmer identifier and a natural-language question:
+### Farmers
 
-```json
+- `GET /farmers/` — list farmers
+- `GET /farmers/{farmer_id}` — retrieve a farmer
+- `POST /farmers/` — create a farmer
+- `PUT /farmers/{farmer_id}` — update a farmer
+- `DELETE /farmers/{farmer_id}` — delete a farmer
+
+### Chat
+
+`POST /chat/`
+
+Example:
+
+~~~json
 {
   "farmer_id": "F006",
   "query": "How can I improve my farm productivity?"
 }
-```
+~~~
 
-The service returns structured recommendations together with reasoning based on the available farmer context.
+The response contains the farmer ID, generated recommendations, and a short reason.
 
 ## Engineering Focus
 
-This project demonstrates how structured business/domain data can be combined with RAG and local LLM inference rather than relying on an LLM alone.
+This project demonstrates a hybrid advisory architecture rather than relying on an LLM alone:
+
+- Structured domain data provides farmer-specific context.
+- Deterministic rules produce interpretable recommendations.
+- FAISS + Sentence Transformers provide semantic retrieval.
+- Conversation memory preserves recent context.
+- Ollama provides natural-language generation.
+- FastAPI exposes the system as a reusable backend service.
+
+## Limitations
+
+- The current weather values are stored in the sample farmer dataset rather than fetched live.
+- Conversation memory is in-process and resets when the application restarts.
+- The LLM depends on a locally running Ollama instance.
+- FAISS artifacts must be rebuilt after changing the farmer dataset.
+- The recommendation rules are a prototype and should not replace professional agricultural advice.
 
 ## Future Improvements
 
-- Weather API integration
-- Multilingual voice interaction
-- Image-based disease detection
+- Live weather API integration
+- Multilingual and voice interaction
+- Image-based crop disease detection
 - Yield prediction
 - Market-price forecasting
-- Government-scheme recommendations
 - IoT sensor integration
 - PostgreSQL and Docker deployment
 
