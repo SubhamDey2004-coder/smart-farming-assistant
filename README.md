@@ -1,253 +1,150 @@
-# 🌾 AI-Powered Personalized Smart Farming Assistant
+# AI-Powered Personalized Smart Farming Assistant
 
-An AI-powered agricultural advisory system that provides personalized farming recommendations using farmer-specific contextual data, Retrieval-Augmented Generation (RAG), and local Large Language Models (LLMs).
+A backend-focused agricultural advisory system that combines farmer-specific data, rule-based recommendations, semantic retrieval, and local LLM inference to provide contextual farming guidance.
 
----
+## Problem
 
-# 🚀 Project Overview
+Generic agricultural advice does not always account for a farmer's soil, crop, weather, irrigation, nutrient, or pest context. This project explores a personalized advisory workflow that combines structured data with retrieved agricultural knowledge.
 
-This project is designed to help farmers receive intelligent, personalized, and explainable farming guidance based on:
-
-- Soil health
-- Crop conditions
-- Weather-related parameters
-- Irrigation conditions
-- Nutrient levels
-- Pest history
-- Crop growth stage
-- Water availability
-- Previous yield data
-
-The system combines:
-
-- FastAPI Backend
-- SQLite Database
-- SQLAlchemy ORM
-- Ollama Local LLM
-- Sentence Transformer Embeddings
-- FAISS Vector Database
-- Conversational Memory
-- Rule-Based Recommendation Engine
-- RAG Architecture
-
----
-
-# 🧠 Core Features
-
-## ✅ Personalized Farming Recommendations
-Provides farmer-specific agricultural advice.
-
-## ✅ Conversational AI Assistant
-Supports natural language farming queries.
-
-## ✅ Local AI Inference
-Uses Ollama with local LLMs like:
-- Phi3 Mini
-- Llama3
-- Mistral
-
-## ✅ RAG-Based Contextual Reasoning
-Uses semantic retrieval with embeddings and FAISS.
-
-## ✅ Intelligent Recommendation Engine
-Performs:
-- Irrigation analysis
-- Soil health analysis
-- Fertilizer recommendations
-- Crop suitability analysis
-- Pest-risk analysis
-
-## ✅ Conversational Memory
-Maintains multi-turn conversation continuity.
-
-## ✅ Structured JSON Responses
-Frontend-friendly API responses.
-
----
-
-# 🏗️ System Architecture
+## Architecture
 
 ```text
 Farmer Query
-      ↓
-FastAPI Backend
-      ↓
-Farmer Database Retrieval
-      ↓
+     ↓
+FastAPI API
+     ↓
+Farmer Context Retrieval
+     ↓
 Recommendation Engine
-      ↓
+     ↓
+RAG Retrieval (FAISS)
+     ↓
 Conversation Memory
-      ↓
-LLM Prompt Construction
-      ↓
+     ↓
+Prompt Construction
+     ↓
 Ollama Local LLM
-      ↓
-Structured AI Response
+     ↓
+Structured Response
 ```
 
----
+## Core Features
 
-# ⚙️ Tech Stack
+- Farmer-specific contextual recommendations
+- Natural-language conversational interface
+- Rule-based recommendation engine
+- Retrieval-Augmented Generation
+- Local LLM inference through Ollama
+- Sentence Transformer embeddings
+- FAISS vector search
+- Conversational memory
+- Structured JSON API responses
+- SQLite persistence with SQLAlchemy
 
-| Component | Technology |
+## Recommendation Areas
+
+The current design covers areas such as:
+
+- Irrigation
+- Soil health
+- Fertilizer recommendations
+- Crop suitability
+- Pest-risk analysis
+
+## Tech Stack
+
+| Layer | Technology |
 |---|---|
 | Backend | FastAPI |
 | Database | SQLite |
 | ORM | SQLAlchemy |
-| Vector DB | FAISS |
 | Embeddings | Sentence Transformers |
-| LLM Runtime | Ollama |
-| AI Model | Phi3 Mini / Llama3 |
+| Vector database | FAISS |
+| LLM runtime | Ollama |
 | Language | Python |
-| API Testing | Swagger UI |
+| API docs | Swagger / OpenAPI |
 
----
-
-# 📂 Project Structure
+## Project Structure
 
 ```text
 smart-farming-assistant/
-│
 ├── app/
 │   ├── api/
-│   │   └── routes/
-│   │       ├── farmer_routes.py
-│   │       └── chat_routes.py
-│   │
 │   ├── core/
-│   │   ├── database.py
-│   │   └── dependencies.py
-│   │
 │   ├── data/
-│   │   └── farmers.csv
-│   │
 │   ├── models/
-│   │   └── farmer_model.py
-│   │
 │   ├── rag/
-│   │   ├── documents/
-│   │   ├── embeddings/
-│   │   └── vector_store/
-│   │
 │   ├── schemas/
-│   │   ├── farmer_schema.py
-│   │   └── chat_schema.py
-│   │
 │   ├── services/
-│   │   ├── rag_service.py
-│   │   ├── llm_service.py
-│   │   ├── recommendation_service.py
-│   │   └── memory_service.py
-│   │
 │   ├── main.py
 │   ├── init_db.py
 │   └── load_data.py
-│
 ├── requirements.txt
 ├── README.md
 └── smart_farming.db
 ```
 
----
+## Run Locally
 
-# 📦 Installation & Setup
-
-## 1️⃣ Clone Repository
-
-```bash
-git clone https://github.com/SubhamDey2004-coder/smart-farming-assistant.git
-cd smart-farming-assistant
-```
-
----
-
-## 2️⃣ Create Virtual Environment
-
-### Windows
+### 1. Create an environment
 
 ```bash
 python -m venv venv
+```
+
+Windows:
+
+```powershell
 venv\Scripts\activate
 ```
 
-### Linux / Mac
-
-```bash
-python -m venv venv
-source venv/bin/activate
-```
-
----
-
-## 3️⃣ Install Dependencies
+### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+### 3. Start Ollama and pull a local model
 
-## 4️⃣ Install Ollama
-
-Download and install:
-
-https://ollama.com
-
----
-
-## 5️⃣ Pull AI Model
+For example:
 
 ```bash
 ollama run phi3:latest
 ```
 
----
-
-## 6️⃣ Initialize Database
+### 4. Initialize the database
 
 ```bash
 python -m app.init_db
 ```
 
----
-
-## 7️⃣ Load Farmer Dataset
+### 5. Load farmer data
 
 ```bash
 python -m app.load_data
 ```
 
----
-
-## 8️⃣ Create Embeddings & FAISS Index
+### 6. Build the embedding index
 
 ```bash
 python -m app.rag.embeddings.create_embeddings
 ```
 
----
-
-## 9️⃣ Run Backend Server
+### 7. Start the API
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
----
-
-# 📘 API Documentation
-
-Swagger Docs:
+Swagger documentation:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
----
+## Example
 
-# 💬 Example Chat Request
-
-## Request
+A request can provide a farmer identifier and a natural-language question:
 
 ```json
 {
@@ -256,50 +153,23 @@ http://127.0.0.1:8000/docs
 }
 ```
 
----
+The service returns structured recommendations together with reasoning based on the available farmer context.
 
-## Response
+## Engineering Focus
 
-```json
-{
-  "farmer_id": "F006",
-  "recommendations": [
-    "Frequent light irrigation is recommended.",
-    "Add organic compost to improve soil fertility."
-  ],
-  "reason": "Low soil moisture and low organic carbon are affecting productivity."
-}
-```
+This project demonstrates how structured business/domain data can be combined with RAG and local LLM inference rather than relying on an LLM alone.
 
----
+## Future Improvements
 
-# 🔮 Future Scope
+- Weather API integration
+- Multilingual voice interaction
+- Image-based disease detection
+- Yield prediction
+- Market-price forecasting
+- Government-scheme recommendations
+- IoT sensor integration
+- PostgreSQL and Docker deployment
 
-- Weather API Integration
-- Multilingual Voice Assistant
-- Disease Detection using Images
-- Yield Prediction
-- Market Price Forecasting
-- Government Scheme Recommendations
-- IoT Sensor Integration
-- PostgreSQL Deployment
-- Dockerization
+## Author
 
----
-
-# 👨‍💻 Author
-
-Subham Dey
-
----
-
-# ⭐ Project Highlights
-
-- Hybrid AI + Rule-Based System
-- Personalized Agricultural Intelligence
-- Local Offline AI Inference
-- Retrieval-Augmented Generation (RAG)
-- Scalable Backend Architecture
-- Frontend-Ready Structured APIs
-
----
+**Subham Dey**
