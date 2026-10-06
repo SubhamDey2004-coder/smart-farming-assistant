@@ -1,6 +1,24 @@
+# Virtual environments
+.venv/
 venv/
+
+# Python cache
 __pycache__/
-*.pyc
+*.py[cod]
+
+# Local configuration / secrets
 .env
-.faiss
+.env.*
+
+# Local database
 *.db
+
+# Generated FAISS artifacts
+app/rag/vector_store/*.faiss
+app/rag/vector_store/*.pkl
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
